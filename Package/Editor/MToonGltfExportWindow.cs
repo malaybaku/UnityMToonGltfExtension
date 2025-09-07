@@ -11,7 +11,7 @@ namespace MToonGltf.Editor
     /// </summary>
     public class MToonGltfExportWindow : GltfExportWindow
     {
-        [MenuItem("MToonGltf/Export Gltf with MToon...", priority = 1)]
+        [MenuItem("MToonGltf/Export GLTF with MToon...", priority = 1)]
         private static void ExportGameObjectToGltf() => ShowWindow();
 
         private static void ShowWindow()
@@ -21,6 +21,7 @@ namespace MToonGltf.Editor
             window.Show();
         }
 
+        // UniGLTFのGltfExportWindow実装とほぼ同じで、gltfExporterの生成部分のみが異なる
         protected override void ExportPath(string path)
         {
             var ext = Path.GetExtension(path).ToLower();
@@ -37,6 +38,7 @@ namespace MToonGltf.Editor
             try
             {
                 var data = new ExportingGltfData();
+                // ここのExporterの生成部分がUniGLTF版と異なる
                 using (var exporter = new MToonGltfExporter(data, Settings,
                     progress: new EditorProgress(),
                     animationExporter: new EditorAnimationExporter()))
@@ -53,7 +55,6 @@ namespace MToonGltf.Editor
                 else
                 {
                     var (json, buffer0) = data.ToGltf(path);
-
                     {
                         // write JSON without BOM
                         var encoding = new System.Text.UTF8Encoding(false);
@@ -73,7 +74,6 @@ namespace MToonGltf.Editor
                     AssetDatabase.ImportAsset(path.ToUnityRelativePath());
                     AssetDatabase.Refresh();
                 }
-
             }
             finally
             {

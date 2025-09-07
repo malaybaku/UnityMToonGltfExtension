@@ -1,7 +1,6 @@
 using System.Linq;
 using UniGLTF;
 using UnityEditor.AssetImporters;
-using UnityEngine;
 using UniVRM10;
 using VRMShaders;
 
@@ -16,34 +15,28 @@ namespace MToonGltf.Editor
 #else
     [ScriptedImporter(1, null, overrideExts: new[] { "glb" })]
 #endif
-    public class MToonGltfImporter : GltfScriptedImporterBase
+    public class MToonGlbScriptedImporter : GltfScriptedImporterBase
     {
-        public override void OnImportAsset(AssetImportContext ctx)
+        public override void OnImportAsset(AssetImportContext context)
         {
-            ImportWithMToonSupport(this, ctx, m_reverseAxis.ToAxes(), m_renderPipeline);
-        }
-
-        // NOTE: 本質的にはGetMaterialGeneratorを差し替えてること以外UniGLTFの GltfScriptedImporterBase.Import と同じ
-        private void ImportWithMToonSupport(
-            ScriptedImporter scriptedImporter,
-            AssetImportContext context,
-            Axes reverseAxis,
-            RenderPipelineTypes renderPipeline)
-        {
-            var extractedObjects = scriptedImporter.GetExternalObjectMap()
+            // 処理そのものはUniGLTFの GltfScriptedImporterBase.Import とほぼ等価だが、
+            // MaterialGeneratorの取得部分だけが差し替わっている
+            var extractedObjects = GetExternalObjectMap()
                 .Where(x => x.Value != null)
                 .ToDictionary(kv => new SubAssetKey(kv.Value.GetType(), kv.Key.name), kv => kv.Value);
 
-            var materialGenerator = GetMaterialGenerator(renderPipeline);
-            using var data = new AutoGltfFileParser(scriptedImporter.assetPath).Parse();
-            using var loader = new ImporterContext(data, extractedObjects, materialGenerator: materialGenerator);
+            using var data = new AutoGltfFileParser(assetPath).Parse();
+            using var loader = new ImporterContext(
+                data,
+                extractedObjects,
+                materialGenerator: GetMaterialGenerator(m_renderPipeline));
 
             foreach (var textureInfo in loader.TextureDescriptorGenerator.Get().GetEnumerable())
             {
                 TextureImporterConfigurator.Configure(textureInfo, loader.TextureFactory.ExternalTextures);
             }
 
-            loader.InvertAxis = reverseAxis;
+            loader.InvertAxis = m_reverseAxis.ToAxes();
             var loaded = loader.Load();
             loaded.ShowMeshes();
 
@@ -52,7 +45,7 @@ namespace MToonGltf.Editor
                 context.AddObjectToAsset(k.Name, o);
             });
             var root = loaded.Root;
-            GameObject.DestroyImmediate(loaded);
+            DestroyImmediate(loaded);
 
             context.AddObjectToAsset(root.name, root);
             context.SetMainObject(root);
