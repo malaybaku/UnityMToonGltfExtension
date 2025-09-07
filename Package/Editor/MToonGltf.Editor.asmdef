@@ -1,0 +1,22 @@
+{
+    "name": "MToonGltf.Editor",
+    "rootNamespace": "",
+    "references": [
+        "UniGLTF",
+        "UniGLTF.Editor",
+        "VRMShaders.GLTF.IO.Runtime",
+        "VRMShaders.GLTF.IO.Editor",
+        "VRM10"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
