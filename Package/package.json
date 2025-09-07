@@ -1,0 +1,10 @@
+{
+    "name": "com.baxter.mtoon-gltf-extension",
+    "displayName": "MToon GLTF",
+    "version": "0.1.0",
+    "unity": "2022.3",
+    "author": "Baxter",
+    "description": "Editor extensions to import and export glTF data with MToon shader",
+    "dependencies": {},
+    "samples": []
+}
