@@ -20,7 +20,7 @@ Note that UniVRM update might lead error, since this package heavily depends on 
 Unity Package Manager > `Install Package from git URL`
 
 ```
-https://github.com/malaybaku/UnityMToonGltfExtension?path=/Package#v0.1.0
+https://github.com/malaybaku/UnityMToonGltfExtension.git?path=/Package#v0.1.0
 ```
 
 ## Limitation
