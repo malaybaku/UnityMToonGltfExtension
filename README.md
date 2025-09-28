@@ -33,6 +33,10 @@ Importer function is limited. I recommend to use import feature only to check th
 
 Export the selected object in which `MToon` materials are used.
 
+Note that you might see warnings like `Materials will be fallback into default material` when exporting object.
+
+You can ignore these warning. Instead, please confirm that `.glb` contains MToon data by importing the file.
+
 ### Import `.glb` file
 
 > Menu Bar -> `MToonGltf` -> `Use MToon glTF Importer`
